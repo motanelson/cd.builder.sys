@@ -1,5 +1,6 @@
 [BITS 16]
-[ORG 0x7C00]          
+[ORG 0x7C00]
+jmp SwitchToLongMode     
 %define PAGE_PRESENT    (1 << 0)
 %define PAGE_WRITE      (1 << 1)
 
