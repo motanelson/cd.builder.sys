@@ -1,6 +1,7 @@
 from datetime import datetime
 then = datetime(2025, 1, 1, 0, 0, 0) 
 now = datetime.now() # Now
+print("\033[43;30m\n")
 duration = now - then # For build-in functions
 duration_in_s = duration.total_seconds() 
 message = """
