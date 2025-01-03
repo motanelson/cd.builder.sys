@@ -1,7 +1,4 @@
-# Qsharp
+# cd.builder
 
 
-q # samples
-
-
-https://vscode.dev/quantum/playground/?vscode
+system.bin builder
