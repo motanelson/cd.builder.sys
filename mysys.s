@@ -25,16 +25,16 @@ loop1:
     jnz loop1
 
     pop ds
-    mov ah, 0x0E    ; Função de imprimir caractere do BIOS
-    mov si, msg     ; Ponteiro para a mensagem
-
-.print_char:
-    lodsb           ; Carrega o próximo byte de [SI] para AL
-    or al, al       ; Verifica se é o fim da string (0)
-    jz .hang        ; Se sim, termina
-    int 0x10        ; Chama o BIOS para imprimir
-    jmp .print_char ; Continua imprimindo
-
+    mov bp, msg     ; Ponteiro para a mensagem
+    mov bl,0x60
+    mov bh,0
+    mov dh,0
+    mov dl,0
+    mov cx,1000
+    mov ah,0x13
+    mov al,0x1
+    int 0x10
+    
 .hang:
     cli             ; Desabilita interrupções
     hlt             ; Entra em estado de espera
