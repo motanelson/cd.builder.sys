@@ -70,7 +70,7 @@ main2:
     
 ;int load sectores into memory
     int 0x13
-    jnc main3
+    jnc printss
     pop dx
     and dx,0xff
     inc dx
@@ -107,8 +107,10 @@ int 0x10
     hlt             ; Entra em estado de espera
 
 
-
-    mov ax, area1     ; Ponteiro para a mensagem
+printss:
+    mov ax,0x1000
+    mov ds,ax
+    mov ax, 31744     ; Ponteiro para a mensagem
     add ax,0
     mov bp,ax
 prints:
@@ -124,7 +126,7 @@ prints:
     mov ax,0
     int 0x16
     pop ax
-    add ax,1600
+    add ax,1024
     mov bp,ax
     jmp prints
 .hang:
@@ -151,7 +153,7 @@ err:
 db "error......................................................................................."
 area0:
 db 0x10,0x0
-dw 10
+dw 32
 dw 0x0,0x1000
 dw 0
 dw 0
