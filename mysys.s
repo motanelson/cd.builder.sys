@@ -72,8 +72,8 @@ main2:
 
 printss:
     mov ax,0x1000
-    mov ds,ax
-    mov ax, 31744     ; Ponteiro para a mensagem
+    mov es,ax
+    mov ax, 61440     ; Ponteiro para a mensagem
     add ax,0
     mov bp,ax
 prints:
@@ -82,7 +82,7 @@ prints:
     mov bh,0
     mov dh,0
     mov dl,0
-    mov cx,1600
+    mov cx,1024
     mov ah,0x13
     mov al,0x1
     int 0x10
