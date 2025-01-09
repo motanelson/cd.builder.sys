@@ -51,19 +51,9 @@ id              db      'FAT12   '
 eess            dw      0
 ees1            dw      0
 _main:
-    jmp main21
-    clc
-    mov ax,area0
-    mov si,ax
-    mov ah,0x4a
-    mov al,1
-    mov dl,0x0
-    int 0x13
-main21:
-mov dx,0x0
+mov dx,0xe0
  
 main2:
-    push dx
     clc
     mov si,area0
     mov ah,0x42
@@ -71,35 +61,8 @@ main2:
 ;int load sectores into memory
     int 0x13
     jnc printss
-    pop dx
-    and dx,0xff
-    inc dx
-    cmp dx,0xff
-    jz error
-    jmp main2
-main3:
-pop dx
-mov ax,dx
-and ax,0xf0
-shr ax,4
-push dx
-mov si,hexs
-add si,ax
-mov al,[si]
-mov ah,0xe
-mov bh,0
-mov bl,0x60
-int 0x10
-pop dx
-mov ax,dx
-and ax,0xf
-mov si,hexs
-add si,ax
-mov al,[si]
-mov ah,0xe
-mov bh,0
-mov bl,0x60
-int 0x10
+    jmp error
+   
 
 
 .hangss:
