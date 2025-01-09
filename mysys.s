@@ -4,7 +4,7 @@
 
 start:
     jmp cons
-msg db "Hello, World!", 0 ; Mensagem a ser impressa (terminada em 0)
+msg db "my system version 1.1 put you message here....", 0 ; Mensagem a ser impressa (terminada em 0)
 
 times 510-($-$$) db 0 ; Preenche até 510 bytes
 dw 0xAA55             ; Assinatura do setor de boot (0xAA55)
@@ -51,22 +51,65 @@ id              db      'FAT12   '
 eess            dw      0
 ees1            dw      0
 _main:
-    mov bx,area1
-    mov al,0x70
-    mov ch,0
-    mov cl,1
-    mov dh,0
-    mov ah,2
-    mov dl,128
+    jmp main21
+    clc
+    mov ax,area0
+    mov si,ax
+    mov ah,0x4a
+    mov al,1
+    mov dl,0x0
+    int 0x13
+main21:
+mov dx,0x0
+ 
+main2:
+    push dx
+    clc
+    mov si,area0
+    mov ah,0x42
+    
 ;int load sectores into memory
-    int 13h
+    int 0x13
+    jnc main3
+    pop dx
+    and dx,0xff
+    inc dx
+    cmp dx,0xff
+    jz error
+    jmp main2
+main3:
+pop dx
+mov ax,dx
+and ax,0xf0
+shr ax,4
+push dx
+mov si,hexs
+add si,ax
+mov al,[si]
+mov ah,0xe
+mov bh,0
+mov bl,0x60
+int 0x10
+pop dx
+mov ax,dx
+and ax,0xf
+mov si,hexs
+add si,ax
+mov al,[si]
+mov ah,0xe
+mov bh,0
+mov bl,0x60
+int 0x10
 
 
+.hangss:
+    cli             ; Desabilita interrupções
+    hlt             ; Entra em estado de espera
 
 
 
     mov ax, area1     ; Ponteiro para a mensagem
-    add ax,33600
+    add ax,0
     mov bp,ax
 prints:
     push bp
@@ -87,5 +130,32 @@ prints:
 .hang:
     cli             ; Desabilita interrupções
     hlt             ; Entra em estado de espera
-
+error:
+    mov bp,err
+    mov bl,0x60
+    mov bh,0
+    mov dh,0
+    mov dl,0
+    mov cx,32
+    mov ah,0x13
+    mov al,0x1
+    int 0x10
+    mov ax,0
+    int 0x16
+.hangs:
+    cli             ; Desabilita interrupções
+    hlt             ; Entra em estado de espera
+hexs:
+db "0123456789abcdf"
+err:
+db "error......................................................................................."
+area0:
+db 0x10,0x0
+dw 10
+dw 0x0,0x1000
+dw 0
+dw 0
+dw 0
+times 32 db 0 ; Preenche até 510 bytes
+area2:
 area1:
